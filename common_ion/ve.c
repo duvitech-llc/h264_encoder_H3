@@ -502,13 +502,19 @@ void ve_flush_cache(struct ve_mem *mem)
 			.end = (long)mem->virt + mem->size,
 		};
 
+		/*
 		struct ion_custom_data cache = {
 			.cmd = ION_IOC_SUNXI_FLUSH_RANGE,
 			.arg = (unsigned long)(&range),
 		};
+		*/
 
-		if (ioctl(ve.ion_fd, ION_IOC_CUSTOM, &cache))
+		ioctl(ve.ion_fd, IOCTL_FLUSH_CACHE, (void*)(&range));
+		
+		/*
+		if (ioctl(ve.ion_fd, ION_IOC_CUSTOM, &cache)<0)
 			perror("ION_IOC_CUSTOM(SUNXI_FLUSH_RANGE) failed");
+		*/
 	}
 	else
 	{

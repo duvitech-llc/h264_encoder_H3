@@ -107,7 +107,7 @@ int main(const int argc, const char **argv)
 	int input_size = params.src_width * (params.src_height + params.src_height / 2);
 	void* input_buf = h264enc_get_input_buffer(encoder);
 
-	printf("Processing data frames\n")
+	printf("Processing data frames\n");
 	while (read_frame(in, input_buf, input_size))
 	{
 		if (h264enc_encode_picture(encoder)) {
