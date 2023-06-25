@@ -77,6 +77,8 @@ int main(const int argc, const char **argv)
 		return EXIT_FAILURE;
 	}
 
+
+	printf("Setting h264 params and creating encoder\n");
 	struct h264enc_params params;
 	params.src_width = (width + 15) & ~15;
 	params.width = width;
@@ -98,11 +100,14 @@ int main(const int argc, const char **argv)
 	
 	//printf("Encoder has been created successfully.\n");
 
+	printf("Getting encoder output stream\n");
 	void* output_buf = h264enc_get_bytestream_buffer(encoder);
 
+	printf("Getting encoder input stream\n");
 	int input_size = params.src_width * (params.src_height + params.src_height / 2);
 	void* input_buf = h264enc_get_input_buffer(encoder);
 
+	printf("Processing data frames\n")
 	while (read_frame(in, input_buf, input_size))
 	{
 		if (h264enc_encode_picture(encoder)) {
@@ -114,13 +119,18 @@ int main(const int argc, const char **argv)
 		}		
 		frnum++;
 	}
-	//printf("Job is complete\n");
+	
+	printf("Encoding complete freeing encoder\n");
 	h264enc_free(encoder);
 
 err:
+	printf("Close VE\n");
 	ve_close();
+	printf("Close Output Stream\n");
 	close(out);
+	printf("Close Input Stream\n");
 	close(in);
 
+	printf("Exiting\n");
 	return EXIT_SUCCESS;
 }
